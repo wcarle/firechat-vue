@@ -7,8 +7,10 @@
 <script>
 import { Message } from '@/models/Message'
 import { firechat } from '@/services/Firechat'
-// @ is an alias to /src
 
+/**
+ * Individual message component
+ */
 export default {
     name: 'Message',
     props: {
@@ -22,6 +24,9 @@ export default {
         }
     },
     methods: {
+        /**
+         * Tell the parent room component to remove this message
+         */
         remove() {
             this.$emit('remove', this.id)
         }

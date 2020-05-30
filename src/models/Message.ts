@@ -1,3 +1,6 @@
+/**
+ * An individual message in a chat room
+ */
 export class Message {
     id = '';
     username = '';
@@ -9,6 +12,9 @@ export class Message {
         this.update(data);
     }
 
+    /**
+     * Update the data of this message
+     */
     update(data: any) {
         this.id = data.id;
         this.username = data.user;

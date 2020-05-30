@@ -1,7 +1,6 @@
 import { Room } from './Room';
 import firebase from 'firebase';
 import 'firebase/database';
-import store from '../store'
 
 export class FireChat {
 
@@ -33,6 +32,9 @@ export class FireChat {
         this.users = this.database.ref('users');
     }
 
+    /**
+     * Get or create a chat room
+     */
     getRoom (name: string): Room {
         const existing = this.rooms.filter(room => room.name === name);
         if (existing.length > 0) {
@@ -60,14 +62,15 @@ export class FireChat {
             else {
                 this.user = data.val();
             }
-            // User is now logged in, we can now allow them to chat
-            // ready();
         }
         else {
             // User logout
         }
     }
 
+    /**
+     * Log the user in (using anonymous auth)
+     */
     login () {
         firebase.auth().onAuthStateChanged((data: any) => { this.authStateChanged(data) });
         // Trigger the actual "login" here is where we'd update things with a JWT token or a social login instead of anonymous authentication
