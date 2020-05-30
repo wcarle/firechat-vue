@@ -1,34 +1,38 @@
 <template>
   <div class="home">
-    <div id="nav">
-        <a href="javascript:void(0);" @click="switchRoom('main')" :class="room === 'main' ? 'link-active' : ''">Main</a> |
-        <a href="javascript:void(0);" @click="switchRoom('mod')" :class="room === 'mod' ? 'link-active' : ''">Mod</a>
-    </div>
-    <Room v-show="room === 'main'" name="main"/>
-    <Room v-show="room === 'mod'" name="mod"/>
+    <form id="message-box" @submit.prevent="sendMessage">
+      <input type="text" v-model="message" placeholder="Message"/><button type="submit">Submit</button>
+    </form>
+    <ul v-if="messages">
+      <Message v-for="message in messages" :message="message" :key="message.id" :id="message.id" />
+    </ul>
   </div>
 </template>
 
 <script>
 import { firechat } from '@/services/Firechat';
 import { mapGetters } from 'vuex';
-import Room from '@/components/Room';
+import Message from '@/components/Message';
 
 export default {
     name: 'Home',
     data() {
         return {
-            room: 'main',
             message: ''
-        }
+        };
     },
+    computed: mapGetters(['messages']),
     components: {
-        Room
+        Message
+    },
+    created() {
+        firechat.login();
     },
     methods: {
-        switchRoom(room) {
-            this.room = room;
-        }
+        sendMessage() {
+            firechat.sendMessage(this.message);
+            this.message = '';
+        },
     }
 }
 </script>
